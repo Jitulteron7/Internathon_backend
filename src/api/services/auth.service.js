@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const EmailService = require("./external/email.service");
+const emailService=new EmailService()
 class AuthService {
     constructor({ UserModel}) {
         this._UserModel = UserModel;
@@ -20,6 +21,7 @@ class AuthService {
             { _id: user._id.toString() },
             process.env.JWT_SECRET
         );
+        
         // user.tokens.push(token);
         await user.save();
         return token;
@@ -58,6 +60,8 @@ class AuthService {
             err.name = "Unauthorized";
             throw err;
         }
+        
+        user._id=user._id.toString();
         return user;
     }
 
@@ -82,21 +86,24 @@ class AuthService {
         return { user: this._toJSON(user), token };
     }
 
-    async signUp(name, email, password,profileImage) {
-        // console.log(name, email, password,profileImage)
+    async signUp(name, email, password,profile_pic,phone_no) {
+        console.log(name, email, password,profile_pic,phone_no)
         try {
 
             const user = await this._UserModel.create({
                 name,
                 email,
                 password, 
-                profileImage,
+                phone_no,
+                profile_pic,
             });
+            
             const token = await this._generateAuthToken(user);
-            return { user: this._toJSON(user), token };
+            // await emailService.inviteEmail(user);
+            return { user: this._toJSON(user), token:token };
         } catch (error) {
-            console.log(error.message);
-            throw new Error("Email already registered");
+            console.log(error);
+            throw new Error(error.message);
         }
 
         

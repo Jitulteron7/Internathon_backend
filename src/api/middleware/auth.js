@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-var UserModel = require("../models/profile");
+var UserModel = require("../models/user.model");
 const AuthService = require("../services/auth.service");
 // const MailService = require("../services/vendor/MailService");
 const authService = new AuthService({
@@ -10,7 +10,7 @@ const authService = new AuthService({
 var auth = asyncHandler(async (req, res, next) => {
         try{
             // console.log(req.header("Authorization").replace("Bearer ", ""))
-            req.token = req.header("Authorization").replace("Bearer ", "");
+            req.token = req.header("Authorization").replace("Token ", "");
             req.user = await authService.checkAuthToken(req.token);  
             next();
         } catch(err){
