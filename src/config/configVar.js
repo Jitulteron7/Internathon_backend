@@ -16,7 +16,7 @@ const MONGO_USERNAME = process.env.MONGO_USERNAME || 'adminUserName';
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || 'adminUserPassword';
 const MONGO_HOST = process.env.MONG_URL || 'http://localhost:27017';
 const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
-const SERVER_PORT = process.env.SERVER_PORT || 8080;
+const SERVER_PORT = process.env.PORT || 8080;
 
 const MONGO = {
     host: MONGO_HOST,
